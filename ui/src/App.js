@@ -1,15 +1,11 @@
-import { useState } from "react";
+import React from "react";
 import "./App.css";
-import Header from "./components/Header";
+import RouteControl from "./views/RouteControl";
 
 function App() {
-  const [userName, setUserName] = useState("Berk");
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <Header />
-      </header>
+    <div className="min-h-full h-screen flex">
+      <RouteControl />
     </div>
   );
 }

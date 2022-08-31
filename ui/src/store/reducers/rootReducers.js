@@ -1,21 +1,11 @@
-const initialState = {
-    count: 0
-}
+import { combineReducers } from "redux";
 
-function rootReducer(state = initialState, action){
-    switch (action.type){
-        case "INCREMENT":
-            return {
-                count: state.count + action.payload
-            }
-        case "DECREMENT":
-            return {
-                count: state.count - action.payload
-            }
+import tokenReducer from "./tokenReducer";
+import authReducer from "./authReducer";
 
-        default:
-            return state
-    }
-}
+const reducer = combineReducers({
+  auth: authReducer,
+  token: tokenReducer
+});
 
-export default rootReducer;
+export default reducer;
