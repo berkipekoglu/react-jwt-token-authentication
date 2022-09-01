@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import setAuthToken from "../helpers/setAuthToken";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
+import InputGroup from "../components/FormFields/InputGroup";
+import Button from "../components/FormFields/Button";
+import jwt_decode from "jwt-decode";
 
 const Login = () => {
   //const [token, setToken] = useState("xx");
@@ -10,25 +13,43 @@ const Login = () => {
   const myToken = useSelector((state) => state.token.token);
   const navigate = useNavigate();
 
-  const HandleSubmit = (email, pass) => {
+  const [inputValue, setInputValue] = useState({ username: "", password: "" });
+  const { username, password } = inputValue;
+  const [formError, setFormError] = useState(false)
+
+  const formHandler = (e) => {
+    const { name, value } = e.target;
+    setInputValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const HandleSubmit = (username, password) => {
     //reqres registered sample user
+    
     console.log("çalıştı");
     const loginPayload = {
-      email: "eve.holt@reqres.in",
-      password: "cityslicka",
+      username: username, //"eve.holt@reqres.in",
+      password: password //"cityslicka",
     };
 
+    const ip = "http://192.168.10.70:8000/token"
+
     axios
-      .post("https://reqres.in/api/login", loginPayload)
+      .post(ip, loginPayload)
       .then((response) => {
         // get token from response
-        const token = response.data.token;
-        //setToken(response.data.token);
+        const token = response.data.access;
+
+        const decoded = jwt_decode(token)
+        console.log("DECODED : ",decoded)
+
         dispatch({
           type: "login",
           payload: token,
         });
-        console.log(response.data.token);
+        console.log(response.data.access);
         // set JWT token to local
         localStorage.setItem("token", token);
 
@@ -39,14 +60,43 @@ const Login = () => {
         navigate("/");
       })
       .catch((err) => console.log(err));
-    console.log("MYTOKEN : ", myToken);
   };
 
+  function login(){
+    HandleSubmit(username, password)
+  }
+
   return (
-    <div className="bg-gray-800 min-h-full w-full">
+    <div className="min-h-full w-full flex justify-center items-center">
       {/* <button onClick={() => HandleSubmit()}>Token Al</button> */}
-asdads
-     </div>
+      {/* <InputField /> */}
+      <div className="bg-neutral-50 shadow-inner w-2/5 max-w-md min-w-max h-96 max-h-max rounded flex justify-center items-center">
+        <div className="w-full flex flex-col mx-10 gap-y-5">
+          <h3 className="text-3xl font-bold mb-4 text-indigo-600">Giriş</h3>
+          <InputGroup
+            label={{ text: "Kullanıcı Adı" }}
+            input={{
+              type: "input",
+              placeholder: "..",
+              onChange: formHandler,
+              name: "username",
+              //error: formError
+            }}
+          />
+          <InputGroup
+            label={{ text: "Şifre" }}
+            input={{
+              type: "password",
+              placeholder: "..",
+              onChange: formHandler,
+              name: "password",
+              //error: formError
+            }}
+          />
+          <Button title="Giriş Yap" buttonType="GradientPurpleToPink" onClick={() => login()} />
+        </div>
+      </div>
+    </div>
   );
 };
 
