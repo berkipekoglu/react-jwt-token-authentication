@@ -1,0 +1,20 @@
+.ant-picker-input input , .ant-picker{
+    background-color: rgb(246, 246, 246);
+    border-radius: 0.5rem/* 8px */;
+    padding: 0.5rem;
+}
+
+.ant-picker-input input::placeholder , .ant-picker::placeholder{
+    border-radius: 0.5rem/* 8px */;
+    padding: 0.3rem;
+    color: rgb(97, 96, 96);
+    
+}
+
+.ant-picker-suffix {
+    padding-right: .6rem;
+}
+
+.ant-picker-clear {
+    padding-right: .3rem;
+}
