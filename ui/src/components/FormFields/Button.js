@@ -18,56 +18,56 @@ import GradientRedToYellow from "./Buttons/GradientRedToYellow";
 import GradientTealToLime from "./Buttons/GradientTealToLime";
 
 
-function Button({ buttonType, style, className, onClick, title, name, type }) {
+function Button(props) {
   // reference: https://flowbite.com/docs/components/buttons/
-  switch (buttonType) {
+  switch (props?.buttonType) {
     case "Blue":
-        return <BlueButton {...{ style, className, onClick, title, name, type }} />
+        return <BlueButton {...props } />
 
     case "Green":
-        return <GreenButton {...{ style, className, onClick, title, name, type }} />
+        return <GreenButton {...props } />
 
     case "Lime":
-        return <LimeButton {...{ style, className, onClick, title, name, type }} />
+        return <LimeButton {...props } />
 
     case "Pink": 
-        return <PinkButton {...{ style, className, onClick, title, name, type }} />
+        return <PinkButton {...props } />
     
     case "Purple": 
-        return <PurpleButton {...{ style, className, onClick, title, name, type }} />
+        return <PurpleButton {...props } />
 
     case "Red": 
-        return <RedButton {...{ style, className, onClick, title, name, type }} />
+        return <RedButton {...props } />
 
     case "Teal": 
-        return <TealButton {...{ style, className, onClick, title, name, type }} />
+        return <TealButton {...props } />
 
     case "Cyan": 
-        return <CyanButton {...{ style, className, onClick, title, name, type }} />
+        return <CyanButton {...props } />
 
     case "GradientCyanToBlue": 
-        return <GradientCyanToBlue {...{ style, className, onClick, title, name, type }} />
+        return <GradientCyanToBlue {...props } />
 
     case "GradientGreenToBlue": 
-        return <GradientGreenToBlue {...{ style, className, onClick, title, name, type }} />
+        return <GradientGreenToBlue {...props } />
 
     case "GradientPinkToOrange": 
-        return <GradientPinkToOrange {...{ style, className, onClick, title, name, type }} />
+        return <GradientPinkToOrange {...props } />
 
     case "GradientPurpleToBlue": 
-        return <GradientPurpleToBlue {...{ style, className, onClick, title, name, type }} />
+        return <GradientPurpleToBlue {...props } />
 
     case "GradientPurpleToPink": 
-        return <GradientPurpleToPink {...{ style, className, onClick, title, name, type }} />
+        return <GradientPurpleToPink {...props } />
 
     case "GradientRedToYellow": 
-        return <GradientRedToYellow {...{ style, className, onClick, title, name, type }} />
+        return <GradientRedToYellow {...props } />
 
     case "GradientTealToLime": 
-        return <GradientTealToLime {...{ style, className, onClick, title, name, type }} />
+        return <GradientTealToLime {...props } />
 
     default:
-        return <BlueButton {...{ style, className, onClick, title, name, type }} />
+        return <BlueButton {...props } />
   }
 }
 

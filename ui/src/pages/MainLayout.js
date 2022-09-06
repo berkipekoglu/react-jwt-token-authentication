@@ -1,12 +1,14 @@
 import React from 'react'
+import Operations from './Operations'
 import Sidebar from './Sidebar'
 
-function MainLayout() {
+function MainLayout(props) {
   return (
-    <div className="">
+    <div className="container h-full flex flex-col">
         <Sidebar />
-        <div>
-            Content layout
+        <div className="flex h-full w-full">
+            { props.children }
+
         </div>
     </div>
   )

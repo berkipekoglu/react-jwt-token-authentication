@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import LoginPage from "../pages/Login";
 import Test from "../pages/Test";
 import MainLayout from "../pages/MainLayout";
+import Operations from "../pages/Operations";
 
 function RouteControl({ children }) {
   //const navigate = useNavigate();
@@ -33,12 +34,14 @@ function RouteControl({ children }) {
   }, [check_token, token]);
 
   return (
-    <Routes>
-      {/* <RouteGuard exact path="/" component={HomePage} /> */}
-      <Route path="/" element={<MainLayout />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/test" element={<Test />} />
-    </Routes>
+    <MainLayout>
+      <Routes>
+        {/* <RouteGuard exact path="/" component={HomePage} /> */}
+        <Route path="/" element={<Operations />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/test" element={<Test />} />
+      </Routes>
+    </MainLayout>
   );
 }
 

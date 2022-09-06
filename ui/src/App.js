@@ -4,7 +4,7 @@ import RouteControl from "./views/RouteControl";
 
 function App() {
   return (
-    <div className="min-h-full h-screen flex">
+    <div className="min-h-full h-screen flex justify-center pt-4">
       <RouteControl />
     </div>
   );

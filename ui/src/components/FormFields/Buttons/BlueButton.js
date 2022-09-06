@@ -1,6 +1,6 @@
 import React from "react";
 
-function BlueButton({ style, className, onClick, title, name, type }) {
+function BlueButton({ style, className, onClick, title, name, type, styleClass }) {
   if (!className) {
     className = `
         w-full
@@ -24,7 +24,7 @@ function BlueButton({ style, className, onClick, title, name, type }) {
     `;
   }
   return (
-    <button className={className} style={style} onClick={onClick}>
+    <button className={className + styleClass} style={style} onClick={onClick}>
       {title}
     </button>
   );
