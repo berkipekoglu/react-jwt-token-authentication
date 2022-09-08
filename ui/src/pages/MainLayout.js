@@ -6,7 +6,7 @@ function MainLayout(props) {
   return (
     <div className="container h-full flex flex-col">
         <Sidebar />
-        <div className="flex h-full w-full">
+        <div className="flex h-full w-full mt-10">
             { props.children }
 
         </div>

@@ -40,7 +40,9 @@ const Login = () => {
       .post(ip, loginPayload)
       .then((response) => {
         // get token from response
+        console.log(response)
         const token = response.data.access;
+        const refresh = response.data.refresh;
 
         const decoded = jwt_decode(token)
         console.log("DECODED : ",decoded)
@@ -52,7 +54,7 @@ const Login = () => {
         console.log(response.data.access);
         // set JWT token to local
         localStorage.setItem("token", token);
-
+        localStorage.setItem("refresh", refresh)
         // set token to axios common header
         setAuthToken(token);
 

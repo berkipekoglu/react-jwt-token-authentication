@@ -32,7 +32,7 @@ function Sidebar() {
           Operasyonlar
         </NavLink>
         <NavLink
-          to="/test"
+          to="/organization"
           className={({ isActive }) =>
           isActive ? "text-blue-700" : "text-gray-700"
           }

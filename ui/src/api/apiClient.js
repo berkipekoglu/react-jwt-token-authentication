@@ -19,9 +19,9 @@ axiosClient.interceptors.response.use(
     },
     function (error) {
         let res = error.response;
-        if(res.status === 401){
-            window.location.href = "/"
-        }
+        // if(res.status === 401){
+        //     window.location.href = "/login"
+        // }
         console.error("Looks there was a problem. Status Code: " + res.status);
         return Promise.reject(error);
     }

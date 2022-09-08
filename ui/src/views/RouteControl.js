@@ -5,6 +5,8 @@ import LoginPage from "../pages/Login";
 import Test from "../pages/Test";
 import MainLayout from "../pages/MainLayout";
 import Operations from "../pages/Operations";
+import Organization from "../pages/Organization";
+import { refresh } from "../api/lib/tokenApi";
 
 function RouteControl({ children }) {
   //const navigate = useNavigate();
@@ -30,6 +32,14 @@ function RouteControl({ children }) {
     if (token === null) {
       console.log("Login yönlendirme");
       navigate("/login", { replace: true });
+    } else if (token) {
+      console.log("refresh token")
+      let refreshToken = localStorage.getItem("refresh");
+      refresh(refreshToken)
+      .then(response => {
+        localStorage.setItem("token", response.data.access)
+        console.log("REFRESH: ", response.data)
+      })
     }
   }, [check_token, token]);
 
@@ -38,6 +48,7 @@ function RouteControl({ children }) {
       <Routes>
         {/* <RouteGuard exact path="/" component={HomePage} /> */}
         <Route path="/" element={<Operations />} />
+        <Route path="/organization" element={<Organization />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/test" element={<Test />} />
       </Routes>
