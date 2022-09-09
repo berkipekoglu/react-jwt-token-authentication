@@ -40,6 +40,16 @@ function RouteControl({ children }) {
         localStorage.setItem("token", response.data.access)
         console.log("REFRESH: ", response.data)
       })
+      .catch(err => {
+        console.log("ERR RESP", err.response.data)
+        console.log("Token Not Valid", err.response.response.data.code)
+        if(err.response.response.data.code === "token_not_valid"){
+          console.log("Token Not Valid", err.response.response.data.code)
+          //navigate("/login", { replace: true });
+        } else {
+          console.log("Catch oldu, token refresh et.")
+        }
+      })
     }
   }, [check_token, token]);
 
