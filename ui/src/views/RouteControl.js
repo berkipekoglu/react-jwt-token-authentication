@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginPage from "../pages/Login";
-import Test from "../pages/Test";
 import MainLayout from "../pages/MainLayout";
 import Operations from "../pages/Operations";
 import Organization from "../pages/Organization";
-import { refresh } from "../api/lib/tokenApi";
+import { getToken, refresh } from "../api/lib/tokenApi";
+import Users from "../pages/Users";
 
 function RouteControl({ children }) {
   //const navigate = useNavigate();
@@ -24,45 +24,86 @@ function RouteControl({ children }) {
 
   let navigate = useNavigate();
   let token;
+  let isLogin = false;
 
   useEffect(() => {
+    console.log("effect çalıştı");
+    let isApiSubscribed = true;
     token = localStorage.getItem("token");
-    console.log("Kontrol sağlandı", token);
-    console.log("Check Token: " + check_token);
+    if (isApiSubscribed) {
+      console.log("if girdi");
+      if (token == null) {
+        navigate("/login", { replace: true });
+      }
+    }
+    return () => {
+      isApiSubscribed = false;
+    };
+    //checkToken();
+  }, []);
+
+  const checkToken = () => {
+    token = localStorage.getItem("token");
     if (token === null) {
       console.log("Login yönlendirme");
       navigate("/login", { replace: true });
     } else if (token) {
-      console.log("refresh token")
+      console.log("refresh token");
       let refreshToken = localStorage.getItem("refresh");
       refresh(refreshToken)
-      .then(response => {
-        localStorage.setItem("token", response.data.access)
-        console.log("REFRESH: ", response.data)
-      })
-      .catch(err => {
-        console.log("ERR RESP", err.response.data)
-        console.log("Token Not Valid", err.response.response.data.code)
-        if(err.response.response.data.code === "token_not_valid"){
-          console.log("Token Not Valid", err.response.response.data.code)
-          //navigate("/login", { replace: true });
-        } else {
-          console.log("Catch oldu, token refresh et.")
-        }
-      })
+        .then((response) => {
+          localStorage.setItem("token", response.data.access);
+          console.log("REFRESH: ", response.data);
+        })
+        .catch((err) => {
+          console.log("ERR RESP", err.response.data);
+          localStorage.clear();
+          navigate("/login", { replace: true });
+          // console.log("Token Not Valid", err.response.response.data.code)
+          // if(err.response.response.data.code === "token_not_valid"){
+          //   console.log("Token Not Valid", err.response.response.data.code)
+          //   //navigate("/login", { replace: true });
+          // } else {
+          //   console.log("Catch oldu, token refresh et.")
+          // }
+        });
+    } else {
+      console.log("ELSE");
     }
-  }, [check_token, token]);
+  };
 
   return (
-    <MainLayout>
+    <>
       <Routes>
         {/* <RouteGuard exact path="/" component={HomePage} /> */}
-        <Route path="/" element={<Operations />} />
-        <Route path="/organization" element={<Organization />} />
+        <Route
+          path="/"
+          element={
+            <MainLayout>
+              <Operations />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/organization"
+          element={
+            <MainLayout>
+              <Organization />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/test"
+          element={
+            <MainLayout>
+              <Users />
+            </MainLayout>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/test" element={<Test />} />
       </Routes>
-    </MainLayout>
+    </>
   );
 }
 

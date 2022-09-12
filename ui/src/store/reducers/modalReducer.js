@@ -10,6 +10,10 @@ const tokenState = {
           modal: action.payload.modal,
           data: action.payload.data
         };
+      case "add_open":
+        return {
+          modal: action.payload.modal,
+        }
       case "close":
         return {
             modal: action.payload.modal,

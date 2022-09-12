@@ -1,9 +1,13 @@
 import React, { useEffect, useState, Fragment } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { getOrganization } from "../api/lib/organizationApi";
+import {
+  deleteSingleOrganization,
+  getOrganization,
+  postOrganization,
+  putSingleOrganization,
+} from "../api/lib/organizationApi";
 import BasicTable from "../components/DataTables/BasicTable";
 import Spinner from "../components/Spinner";
-
 
 function Organization() {
   const [data, setData] = useState([]);
@@ -38,6 +42,73 @@ function Organization() {
             { type: "actions", name: "" },
           ]}
           rows={data}
+          addModal={[
+            {
+              type: "text",
+              name: "Organizasyon Adı",
+              key: "organization_name",
+            },
+            {
+              type: "text",
+              name: "Kullanıcı",
+              key: "username",
+            },
+            {
+              type: "text",
+              name: "Organizasyon ID",
+              key: "organization_id",
+            },
+            {
+              type: "number",
+              name: "Kullanıcı ID",
+              key: "user_id",
+            },
+            {
+              type: "password",
+              name: "Kullanıcı Şifresi",
+              key: "password",
+            },
+            {
+              type: "description",
+              name: "Açıklama",
+              key: "description",
+            },
+          ]}
+          editModal={[
+            {
+              type: "text",
+              name: "Organizasyon Adı",
+              key: "organization_name",
+            },
+            {
+              type: "text",
+              name: "Kullanıcı",
+              key: "username",
+            },
+            {
+              type: "text",
+              name: "Organizasyon ID",
+              key: "organization_id",
+            },
+            {
+              type: "number",
+              name: "Kullanıcı ID",
+              key: "user_id",
+            },
+            {
+              type: "password",
+              name: "Kullanıcı Şifresi",
+              key: "password",
+            },
+            {
+              type: "description",
+              name: "Açıklama",
+              key: "description",
+            },
+          ]}
+          updateFunc={putSingleOrganization}
+          addFunc={postOrganization}
+          deleteFunc={deleteSingleOrganization}
         />
       ) : (
         <Spinner />

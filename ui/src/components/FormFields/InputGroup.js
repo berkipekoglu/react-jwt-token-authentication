@@ -3,7 +3,6 @@ import InputField from "./InputField";
 
 function InputGroup({ label, input }) {
     if(!label.className){
-        console.log("lable girdi")
         
     }
     label.className = `
