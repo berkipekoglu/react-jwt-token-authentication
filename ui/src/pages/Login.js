@@ -40,18 +40,17 @@ const Login = () => {
       .post(ip, loginPayload)
       .then((response) => {
         // get token from response
-        console.log(response)
         const token = response.data.access;
         const refresh = response.data.refresh;
 
         const decoded = jwt_decode(token)
-        console.log("DECODED : ",decoded)
+        //console.log("DECODED : ",decoded)
 
         dispatch({
           type: "login",
           payload: token,
         });
-        console.log(response.data.access);
+
         // set JWT token to local
         localStorage.setItem("token", token);
         localStorage.setItem("refresh", refresh)
@@ -79,7 +78,7 @@ const Login = () => {
             label={{ text: "Kullanıcı Adı" }}
             input={{
               type: "input",
-              placeholder: "..",
+              placeholder: "",
               onChange: formHandler,
               name: "username",
               //error: formError
@@ -89,7 +88,7 @@ const Login = () => {
             label={{ text: "Şifre" }}
             input={{
               type: "password",
-              placeholder: "..",
+              placeholder: "",
               onChange: formHandler,
               name: "password",
               //error: formError

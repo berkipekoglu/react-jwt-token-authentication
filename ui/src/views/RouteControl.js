@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginPage from "../pages/Login";
@@ -7,6 +7,7 @@ import Operations from "../pages/Operations";
 import Organization from "../pages/Organization";
 import { getToken, refresh } from "../api/lib/tokenApi";
 import Users from "../pages/Users";
+import setAuthToken from "../helpers/setAuthToken";
 
 function RouteControl({ children }) {
   //const navigate = useNavigate();
@@ -23,53 +24,70 @@ function RouteControl({ children }) {
   const check_token = useSelector((state) => state.token.token);
 
   let navigate = useNavigate();
-  let token;
+  const [token, setToken] = useState();
   let isLogin = false;
 
+  // useEffect(() => {
+  //   // console.log("effect çalıştı");
+  //   // let isApiSubscribed = true;
+  //   // token = localStorage.getItem("token");
+  //   // if (isApiSubscribed) {
+  //   //   console.log("if girdi");
+  //   //   if (token) {
+  //   //     console.log("BURASI ÇALIŞTI")
+  //   //     navigate("/login", { replace: true });
+  //   //   } else {
+  //   //     console.log("BURASI 2 ÇALIŞTI")
+  //   //     checkToken();
+  //   //   }
+  //   // }
+  //   // return () => {
+  //   //   isApiSubscribed = false;
+  //   // };
+  //   checkToken();
+  // }, []);
+
   useEffect(() => {
-    console.log("effect çalıştı");
-    let isApiSubscribed = true;
-    token = localStorage.getItem("token");
-    if (isApiSubscribed) {
-      console.log("if girdi");
-      if (token == null) {
-        navigate("/login", { replace: true });
-      }
+    const myToken = localStorage.getItem("token");
+    if (myToken) {
+      console.log("Token var");
+    } else {
+      console.log("token yok");
+      navigate("/login", { replace: true });
     }
-    return () => {
-      isApiSubscribed = false;
-    };
-    //checkToken();
   }, []);
 
   const checkToken = () => {
-    token = localStorage.getItem("token");
-    if (token === null) {
-      console.log("Login yönlendirme");
-      navigate("/login", { replace: true });
-    } else if (token) {
-      console.log("refresh token");
-      let refreshToken = localStorage.getItem("refresh");
-      refresh(refreshToken)
-        .then((response) => {
-          localStorage.setItem("token", response.data.access);
-          console.log("REFRESH: ", response.data);
-        })
-        .catch((err) => {
-          console.log("ERR RESP", err.response.data);
-          localStorage.clear();
-          navigate("/login", { replace: true });
-          // console.log("Token Not Valid", err.response.response.data.code)
-          // if(err.response.response.data.code === "token_not_valid"){
-          //   console.log("Token Not Valid", err.response.response.data.code)
-          //   //navigate("/login", { replace: true });
-          // } else {
-          //   console.log("Catch oldu, token refresh et.")
-          // }
-        });
-    } else {
-      console.log("ELSE");
-    }
+    // token = localStorage.getItem("token");
+    // if (token === null) {
+    //   console.log("Login yönlendirme");
+    //   navigate("/login", { replace: true });
+    // } else if (token) {
+    //   console.log("refresh token");
+    //   let refreshToken = localStorage.getItem("refresh");
+    //   refresh(refreshToken)
+    //     .then((response) => {
+    //       localStorage.setItem("token", response.data.access);
+    //       setAuthToken(token);
+    //       console.log("REFRESH: ", response.data);
+    //     })
+    //     .catch((err) => {
+    //       console.log("ERR RESP", err.response.data);
+    //       localStorage.clear();
+    //       navigate("/login", { replace: true });
+    //       // console.log("Token Not Valid", err.response.response.data.code)
+    //       // if(err.response.response.data.code === "token_not_valid"){
+    //       //   console.log("Token Not Valid", err.response.response.data.code)
+    //       //   //navigate("/login", { replace: true });
+    //       // } else {
+    //       //   console.log("Catch oldu, token refresh et.")
+    //       // }
+    //     });
+    // } else {
+    //   console.log("ELSE");
+    // }
+    setToken(localStorage.getItem("token"));
+    console.log("test: ", token);
   };
 
   return (
@@ -94,7 +112,7 @@ function RouteControl({ children }) {
         />
 
         <Route
-          path="/test"
+          path="/users"
           element={
             <MainLayout>
               <Users />

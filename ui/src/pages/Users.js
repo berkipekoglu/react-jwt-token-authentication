@@ -35,8 +35,10 @@ function Users() {
         <BasicTable
           columns={[
             { type: "id", name: "ID" },
+            { type: "username", name: "Kullanıcı Adı" },
             { type: "first_name", name: "Adı" },
             { type: "last_name", name: "Soyadı" },
+            { type: "email", name: "E-posta" },
             { type: "actions", name: "" },
           ]}
           rows={data}
@@ -62,14 +64,14 @@ function Users() {
               key: "email",
             },
             {
-              type: "checkbox",
-              name: "Etkin",
-              key: "is_active",
-            },
-            {
               type: "password",
               name: "Parola",
               key: "password",
+            },
+            {
+              type: "checkbox",
+              name: "Etkin",
+              key: "is_active",
             },
           ]}
           editModal={[
@@ -92,6 +94,11 @@ function Users() {
               type: "email",
               name: "E-posta adresi",
               key: "email",
+            },
+            {
+              type: "password",
+              name: "Parola",
+              key: "password",
             },
             {
               type: "checkbox",

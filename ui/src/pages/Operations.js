@@ -60,7 +60,7 @@ function Operations() {
         <Button
           buttonType="GradientPinkToOrange"
           title="Gönder"
-          styleClass="py-5 mt-2"
+          styleClass="h-14 mt-2"
           onClick={() => get_postArmon()}
         />
       </div>

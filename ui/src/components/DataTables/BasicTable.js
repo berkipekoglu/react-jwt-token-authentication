@@ -2,6 +2,8 @@ import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../FormFields/Button";
 import { Dialog, Transition } from "@headlessui/react";
+import {refresh} from '../../utils/utils'
+
 import {
   deleteSingleOrganization,
   postOrganization,
@@ -193,6 +195,8 @@ const ModalEdit = ({
   type,
 }) => {
   let [isOpen, setIsOpen] = useState(isOpenParams);
+  const [checked, setChecked] = useState(false);
+  const modalActionInputs = type === "add" ? addModal : editModal;
   const dispatch = useDispatch();
   const updateFunc = _updateFunc;
   const deleteFunc = _deleteFunc;
@@ -213,15 +217,25 @@ const ModalEdit = ({
     let obj = {};
     for (const [key, value] of Object.entries(data)) {
       // console.log(`${key}: ${value}`);
-      // console.log("obj: ", obj)
       obj = { ...obj, [key]: value };
     }
     return obj;
   });
 
   const inputHandler = (e) => {
-    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+    if (e.target.type === "checkbox") {
+      setChecked(e.target.checked);
+      setInputValues({ ...inputValues, [e.target.name]: e.target.checked });
+    } else setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
+
+  const checkBoxHandler = (e) => {
+    setChecked(!checked);
+  };
+
+  useEffect(() => {
+    setChecked(inputValues?.is_active)
+  }, [inputValues]);
 
   const updateHandler = () => {
     updateFunc(inputValues)
@@ -260,11 +274,7 @@ const ModalEdit = ({
       });
   };
 
-  const refresh = () => {
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
+  
 
   return (
     <>
@@ -328,8 +338,47 @@ const ModalEdit = ({
                   <div className="mt-2">
                     <form>
                       <div className="grid gap-6 mb-6 md:grid-cols-2">
-                        {editModal.map((item, index) => {
-                          return item.key !== "description" ? (
+                        {modalActionInputs.map((item, index) => {
+                          if (item.key === "description") {
+                            return (
+                              <div className="col-span-full" key={index}>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                  {item.name}
+                                </label>
+                                <textarea
+                                  name="description"
+                                  rows="4"
+                                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="birkaç cümlecik.."
+                                  value={inputValues[item?.key] || ''}
+                                  onChange={inputHandler}
+                                ></textarea>
+                              </div>
+                            );
+                          } else if (item.type === "checkbox") {
+                            return (
+                              <div key={index}>
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                  {item?.name}
+                                </label>
+                                <div className="flex items-center gap-2">
+                                  <input
+                                    type={item?.type}
+                                    name={item?.key}
+                                    className="bg-gray-50 border border-gray-300 text-rose-500 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    value={inputValues[item?.key] || ''}
+                                    required
+                                    checked={checked || false}
+                                    onChange={inputHandler}
+                                  />
+                                  <label className="text-rose-500 font-medium text-sm">
+                                    Etkinleştir
+                                  </label>
+                                </div>
+                              </div>
+                            );
+                          }
+                          return (
                             <div key={index}>
                               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                 {item?.name}
@@ -338,24 +387,10 @@ const ModalEdit = ({
                                 type={item?.type}
                                 name={item?.key}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                value={inputValues[item?.key]}
+                                value={inputValues[item?.key] || ''}
                                 required
                                 onChange={inputHandler}
                               />
-                            </div>
-                          ) : (
-                            <div className="col-span-full" key={index}>
-                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                {item.name}
-                              </label>
-                              <textarea
-                                name="description"
-                                rows="4"
-                                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="birkaç cümlecik.."
-                                value={inputValues[item?.key]}
-                                onChange={inputHandler}
-                              ></textarea>
                             </div>
                           );
                         })}

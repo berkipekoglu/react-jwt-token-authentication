@@ -6,12 +6,14 @@ const token = localStorage.getItem('token');
 
 const axiosClient = axios.create({
     baseURL: baseURL,
+    timeout: 1000,
     headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     }
+    
 });
+
+//axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 axiosClient.interceptors.response.use(
     function (response){
@@ -23,6 +25,9 @@ axiosClient.interceptors.response.use(
         //     window.location.href = "/login"
         // }
         console.error("Looks there was a problem. Status Code: " + res.status);
+        if(res.status){
+            window.location.reload();
+        }
         return Promise.reject(error);
     }
 )
