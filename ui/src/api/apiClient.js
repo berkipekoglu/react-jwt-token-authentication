@@ -24,9 +24,15 @@ axiosClient.interceptors.response.use(
         // if(res.status === 401){
         //     window.location.href = "/login"
         // }
-        console.error("Looks there was a problem. Status Code: " + res.status);
-        if(res.status){
-            window.location.reload();
+        console.error("Looks there was a problem. Status Code: " + res);
+        if(res?.status === 401){
+           window.location.reload();
+        } else if (res?.code === "ECONNABORTED"){
+            console.log("Timeout hatası", res)
+            window.location.href = "/login"
+        }
+        else {
+            window.location.href = "/login"
         }
         return Promise.reject(error);
     }

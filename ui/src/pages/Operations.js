@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/FormFields/Button";
 //import DatePicker from "../components/FormFields/DatePicker";
 import { postArmon } from "../api/lib/armonApi";
-import { DatePicker, Space } from "antd";
+import { ConfigProvider, DatePicker, Space } from "antd";
 import "../components/FormFields/DatePicker.css";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
+import locale from 'antd/es/locale/tr_TR';
+
 
 function Operations() {
   const [dates, setDates] = useState({
@@ -24,10 +26,10 @@ function Operations() {
 
     postArmon(params)
       .then((response) => {
-        if(response?.data.data === false){
-          toast.error('İki tarih arasında veri bulunamadı.');
+        if (response?.data.data === false) {
+          toast.error("İki tarih arasında veri bulunamadı.");
         } else {
-          toast.success('Veriler hazırlandı, LOGO\'ya aktarım için hazır.');
+          toast.success("Veriler hazırlandı, LOGO'ya aktarım için hazır.");
         }
       })
       .catch((error) => {
@@ -41,20 +43,22 @@ function Operations() {
   const onChange = (date, dateString) => {
     setDates({
       start_date: dateString[0],
-      end_date: dateString[1]
-    })
-  }
+      end_date: dateString[1],
+    });
+  };
 
   return (
     <div className="flex w-full justify-center items-center mb-56 ">
-      <Space direction="vertical" size={12}>
-        <DatePicker.RangePicker
-          autoFocus={true}
-          format="YYYY-MM-DD"
-          onChange={onChange}
-          placeholder={["Başlangıç tarihi", "Bitiş tarihi"]}
-        />
-      </Space>
+        <Space direction="vertical" size={12}>
+          <DatePicker
+            autoFocus={true}
+            format="YYYY-MM-DD"
+            onChange={onChange}
+            placeholder={"Tarih seçiniz.."}
+            picker="month"
+            locale={{"Jan": "Ocak", "Jannuary": "Ocak2"}}
+          />
+        </Space>
 
       <div className="ml-2 py-4 ">
         <Button
