@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import InputGroup from "../components/FormFields/InputGroup";
 import Button from "../components/FormFields/Button";
 import jwt_decode from "jwt-decode";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   //const [token, setToken] = useState("xx");
@@ -39,6 +40,7 @@ const Login = () => {
     axios
       .post(ip, loginPayload)
       .then((response) => {
+        toast.success("Giriş yapıldı, yönlendiriliyorsunuz..");
         // get token from response
         const token = response.data.access;
         const refresh = response.data.refresh;
@@ -58,9 +60,15 @@ const Login = () => {
         setAuthToken(token);
 
         // redirect user to home page
-        navigate("/");
+        
+        setTimeout(() => {
+          navigate("/", { replace: true});
+        }, 1500)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Lütfen giriş bilgilerinizi kontrol ediniz.");
+        console.log("--->",err)
+      });
   };
 
   function login(){
@@ -97,6 +105,7 @@ const Login = () => {
           <Button title="Giriş Yap" buttonType="GradientPurpleToPink" onClick={() => login()} />
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
