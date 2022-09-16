@@ -7,6 +7,7 @@ import InputGroup from "../components/FormFields/InputGroup";
 import Button from "../components/FormFields/Button";
 import jwt_decode from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
+import { Axios_token_api } from "../store/actions/tokenActions";
 
 const Login = () => {
   //const [token, setToken] = useState("xx");
@@ -16,7 +17,7 @@ const Login = () => {
 
   const [inputValue, setInputValue] = useState({ username: "", password: "" });
   const { username, password } = inputValue;
-  const [formError, setFormError] = useState(false)
+  const [formError, setFormError] = useState(false);
 
   const formHandler = (e) => {
     const { name, value } = e.target;
@@ -28,14 +29,16 @@ const Login = () => {
 
   const HandleSubmit = (username, password) => {
     //reqres registered sample user
-    
+    console.log("çalıştı yahu");
+    //dispatch(Axios_token_api(username, password))
+
     console.log("çalıştı");
     const loginPayload = {
       username: username, //"eve.holt@reqres.in",
-      password: password //"cityslicka",
+      password: password, //"cityslicka",
     };
 
-    const ip = "http://192.168.10.70:8000/token"
+    const ip = "http://192.168.10.70:8000/token";
 
     axios
       .post(ip, loginPayload)
@@ -45,13 +48,20 @@ const Login = () => {
         const token = response.data.access;
         const refresh = response.data.refresh;
 
-        const decoded = jwt_decode(token)
+        const decoded = jwt_decode(token);
         //console.log("DECODED : ",decoded)
 
         dispatch({
           type: "login",
-          payload: token,
+          payload: {
+            token: token,
+            refresh: refresh,
+            username: username,
+            password: password,
+          },
         });
+
+
 
         // set JWT token to local
         localStorage.setItem("token", token);
@@ -60,19 +70,19 @@ const Login = () => {
         setAuthToken(token);
 
         // redirect user to home page
-        
+
         setTimeout(() => {
-          navigate("/", { replace: true});
-        }, 1500)
+          navigate("/", { replace: false });
+        }, 1500);
       })
       .catch((err) => {
         toast.error("Lütfen giriş bilgilerinizi kontrol ediniz.");
-        console.log("--->",err)
+        console.log("--->", err);
       });
   };
 
-  function login(){
-    HandleSubmit(username, password)
+  function login() {
+    HandleSubmit(username, password);
   }
 
   return (
@@ -102,7 +112,11 @@ const Login = () => {
               //error: formError
             }}
           />
-          <Button title="Giriş Yap" buttonType="GradientPurpleToPink" onClick={() => login()} />
+          <Button
+            title="Giriş Yap"
+            buttonType="GradientPurpleToPink"
+            onClick={() => login()}
+          />
         </div>
       </div>
       <Toaster />

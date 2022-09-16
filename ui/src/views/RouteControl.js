@@ -8,6 +8,7 @@ import Organization from "../pages/Organization";
 import { getToken, refresh } from "../api/lib/tokenApi";
 import Users from "../pages/Users";
 import setAuthToken from "../helpers/setAuthToken";
+import Logs from "../pages/Logs";
 
 function RouteControl({ children }) {
   //const navigate = useNavigate();
@@ -26,6 +27,18 @@ function RouteControl({ children }) {
   let navigate = useNavigate();
   const [token, setToken] = useState();
   let isLogin = false;
+
+  const getToken = useSelector(state => state.token.token)
+
+  useEffect(() => {
+    console.log("useEffect çalıştı")
+    if(!getToken){
+      navigate('./login', {replace: true})
+    }
+  }, [getToken])
+
+
+
 
   // useEffect(() => {
   //   // console.log("effect çalıştı");
@@ -47,48 +60,51 @@ function RouteControl({ children }) {
   //   checkToken();
   // }, []);
 
-  useEffect(() => {
-    const myToken = localStorage.getItem("token");
-    if (myToken) {
-      console.log("Token var");
-    } else {
-      console.log("token yok");
-      navigate("/login", { replace: true });
-    }
-  }, []);
 
-  const checkToken = () => {
-    // token = localStorage.getItem("token");
-    // if (token === null) {
-    //   console.log("Login yönlendirme");
-    //   navigate("/login", { replace: true });
-    // } else if (token) {
-    //   console.log("refresh token");
-    //   let refreshToken = localStorage.getItem("refresh");
-    //   refresh(refreshToken)
-    //     .then((response) => {
-    //       localStorage.setItem("token", response.data.access);
-    //       setAuthToken(token);
-    //       console.log("REFRESH: ", response.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log("ERR RESP", err.response.data);
-    //       localStorage.clear();
-    //       navigate("/login", { replace: true });
-    //       // console.log("Token Not Valid", err.response.response.data.code)
-    //       // if(err.response.response.data.code === "token_not_valid"){
-    //       //   console.log("Token Not Valid", err.response.response.data.code)
-    //       //   //navigate("/login", { replace: true });
-    //       // } else {
-    //       //   console.log("Catch oldu, token refresh et.")
-    //       // }
-    //     });
-    // } else {
-    //   console.log("ELSE");
-    // }
-    setToken(localStorage.getItem("token"));
-    console.log("test: ", token);
-  };
+
+  // useEffect(() => {
+  //   const myToken = localStorage.getItem("token");
+  //   console.log("girdi")
+  //   if (myToken) {
+  //     console.log("Token var");
+  //   } else {
+  //     console.log("token yok");
+  //     navigate("/login", { replace: true });
+  //   }
+  // }, []);
+
+  // const checkToken = () => {
+  //   token = localStorage.getItem("token");
+  //   if (token === null) {
+  //     console.log("Login yönlendirme");
+  //     navigate("/login", { replace: true });
+  //   } else if (token) {
+  //     console.log("refresh token");
+  //     let refreshToken = localStorage.getItem("refresh");
+  //     refresh(refreshToken)
+  //       .then((response) => {
+  //         localStorage.setItem("token", response.data.access);
+  //         setAuthToken(token);
+  //         console.log("REFRESH: ", response.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log("ERR RESP", err.response.data);
+  //         localStorage.clear();
+  //         navigate("/login", { replace: true });
+  //         // console.log("Token Not Valid", err.response.response.data.code)
+  //         // if(err.response.response.data.code === "token_not_valid"){
+  //         //   console.log("Token Not Valid", err.response.response.data.code)
+  //         //   //navigate("/login", { replace: true });
+  //         // } else {
+  //         //   console.log("Catch oldu, token refresh et.")
+  //         // }
+  //       });
+  //   } else {
+  //     console.log("ELSE");
+  //   }
+  //   setToken(localStorage.getItem("token"));
+  //   console.log("test: ", token);
+  // };
 
   return (
     <>
@@ -116,6 +132,14 @@ function RouteControl({ children }) {
           element={
             <MainLayout>
               <Users />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/logs"
+          element={
+            <MainLayout>
+              <Logs />
             </MainLayout>
           }
         />

@@ -188,6 +188,14 @@ function Sidebar() {
           >
             <div className="h-full flex items-center">Kullanıcılar</div>
           </NavLink>
+          <NavLink
+            to="/logs"
+            className={({ isActive }) =>
+              isActive ? "text-blue-700" : "text-gray-700"
+            }
+          >
+            <div className="h-full flex items-center">Loglar</div>
+          </NavLink>
           <div className="">
             <button
               onClick={Logout}

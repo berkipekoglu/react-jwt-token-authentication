@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/FormFields/Button";
 //import DatePicker from "../components/FormFields/DatePicker";
 import { postArmon } from "../api/lib/armonApi";
-import { ConfigProvider, DatePicker, Space } from "antd";
+import { DatePicker, Space } from "antd";
 import "../components/FormFields/DatePicker.css";
 import toast, { Toaster } from "react-hot-toast";
 import "moment/locale/tr";

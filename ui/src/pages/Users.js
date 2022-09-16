@@ -1,31 +1,46 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  deleteSingleOrganization,
-  getOrganization,
-  postOrganization,
-  putSingleOrganization,
-} from "../api/lib/organizationApi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { deleteUser, getUsers, postUser, putUser } from "../api/lib/usersApi";
 import BasicTable from "../components/DataTables/BasicTable";
 import Spinner from "../components/Spinner";
 
 function Users() {
   const [data, setData] = useState([]);
+  const stateData = useSelector(state => state.data.data)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(stateData)
     getUsers()
       .then((response) => {
-        //console.log(response.data);
-        setData(response.data);
+        dispatch({
+          type: 'data',
+          payload: response.data
+        })
+        setData(response.data)
       })
       .catch((error) => {
         console.log("HATA: ", error);
         toast.error("Bağlantıda bir hata meydana geldi.", {
           duration: Infinity,
         });
+      })
+      .finally(() => {
+        setData(stateData)
       });
   }, []);
+
+  useEffect(() => {
+    setData([stateData])
+    navigate("/users", {
+      replace: true,
+      state: stateData
+    })
+    
+  }, [stateData, dispatch])
 
   return (
     <div className="w-full">
@@ -109,6 +124,7 @@ function Users() {
           updateFunc={putUser}
           addFunc={postUser}
           deleteFunc={deleteUser}
+          getFunc={getUsers}
         />
       ) : (
         <Spinner />

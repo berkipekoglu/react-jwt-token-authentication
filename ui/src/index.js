@@ -3,12 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux/es/exports";
 import reducer from "./store/reducers/rootReducers";
 import { BrowserRouter } from "react-router-dom";
+import thunk from "redux-thunk";
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

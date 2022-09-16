@@ -1,5 +1,7 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   deleteSingleOrganization,
   getOrganization,
@@ -11,20 +13,39 @@ import Spinner from "../components/Spinner";
 
 function Organization() {
   const [data, setData] = useState([]);
+  const stateData = useSelector(state => state.data.data)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getOrganization()
       .then((response) => {
-        //console.log(response.data);
-        setData(response.data);
+        dispatch({
+          type: 'data',
+          payload: response.data
+        })
+        setData(response.data)
       })
       .catch((error) => {
         console.log("HATA: ", error);
         toast.error("Bağlantıda bir hata meydana geldi.", {
           duration: Infinity,
         });
-      });
+        
+      })
+      .finally(() => {
+        setData(stateData)
+      })
   }, []);
+
+  useEffect(() => {
+    setData([stateData])
+    navigate("/organization", {
+      replace: true,
+      state: stateData
+    })
+    
+  }, [stateData, dispatch])
 
   return (
     <div className="w-full">
@@ -109,9 +130,10 @@ function Organization() {
           updateFunc={putSingleOrganization}
           addFunc={postOrganization}
           deleteFunc={deleteSingleOrganization}
+          getFunc={getOrganization}
         />
       ) : (
-        <Spinner />
+        <Spinner /> 
       )}
       <Toaster />
     </div>

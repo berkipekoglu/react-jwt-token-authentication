@@ -4,11 +4,6 @@ import Button from "../FormFields/Button";
 import { Dialog, Transition } from "@headlessui/react";
 import {refresh} from '../../utils/utils'
 
-import {
-  deleteSingleOrganization,
-  postOrganization,
-  putSingleOrganization,
-} from "../../api/lib/organizationApi";
 import toast from "react-hot-toast";
 
 function BasicTable({
@@ -19,6 +14,7 @@ function BasicTable({
   updateFunc,
   addFunc,
   deleteFunc,
+  getFunc
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -80,6 +76,7 @@ function BasicTable({
           _deleteFunc={deleteFunc}
           _modalTitle={modalTitle}
           type={modalType}
+          _getFunc={getFunc}
         />
       )}
       <div className="">
@@ -191,6 +188,7 @@ const ModalEdit = ({
   _updateFunc,
   _addFunc,
   _deleteFunc,
+  _getFunc,
   _modalTitle,
   type,
 }) => {
@@ -200,7 +198,10 @@ const ModalEdit = ({
   const dispatch = useDispatch();
   const updateFunc = _updateFunc;
   const deleteFunc = _deleteFunc;
+  const getFunc = _getFunc;
   const addFunc = _addFunc;
+  const stateData = useSelector(state => state.data.data )
+  const [_data, _setData] = useState(data)
 
   function closeModal() {
     dispatch({
@@ -237,12 +238,31 @@ const ModalEdit = ({
     setChecked(inputValues?.is_active)
   }, [inputValues]);
 
+  const getHandler = () => {
+    getFunc()
+    .then(resp => {
+      dispatch({
+        type: 'data',
+        payload: {
+          data: resp.data
+        }
+      })
+    })
+    .catch((err) => {
+      console.log("Veri çekilirken bir hata oluştu: ", err.message)
+    })
+  }
+
   const updateHandler = () => {
     updateFunc(inputValues)
       .then((response) => {
         toast.success("Kayıt güncellendi");
+        dispatch({
+          type: 'data',
+          payload: response.data
+        })
         closeModal();
-        refresh();
+        //refresh();
       })
       .catch((err) => {
         console.log(err);
@@ -250,12 +270,16 @@ const ModalEdit = ({
       });
   };
 
+  useEffect(() => {
+    _setData(stateData)
+  }, [stateData])
+
   const deleteHandler = () => {
     deleteFunc(inputValues)
       .then((response) => {
         toast.success("Kayıt silindi.");
         closeModal();
-        refresh();
+        //refresh();
       })
       .catch((err) => {
         toast.error("Kayıt silinirken bir sorun oluştu! \n ", err);
@@ -267,7 +291,7 @@ const ModalEdit = ({
       .then((response) => {
         toast.success("Kayıt eklendi.");
         closeModal();
-        refresh();
+        //refresh();
       })
       .catch((err) => {
         toast.error("Kayıt eklenirken bir hata oluştu! \n ", err);

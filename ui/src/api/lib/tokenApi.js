@@ -10,7 +10,7 @@ export function getToken(params){
 }
 
 function tokenRegister(params){
-  localStorage.setItem("token", params.access);
-  localStorage.setItem("refresh", params.refresh);
+  // localStorage.setItem("token", params.access);
+  // localStorage.setItem("refresh", params.refresh);
   setAuthToken(params.access)
 }
