@@ -1,6 +1,15 @@
 import React from "react";
 
-function GradientPurpleToBlueButton({ style, className, onClick, title, name, type }) {
+function GradientPurpleToBlueButton({
+  style,
+  className,
+  onClick,
+  title,
+  name,
+  type,
+  styleClass,
+  disabled,
+}) {
   if (!className) {
     className = `
       w-full
@@ -24,7 +33,7 @@ function GradientPurpleToBlueButton({ style, className, onClick, title, name, ty
     `;
   }
   return (
-    <button className={className} style={style} onClick={onClick}>
+    <button className={className + styleClass} style={style} onClick={onClick} disabled={disabled}>
       {title}
     </button>
   );

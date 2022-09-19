@@ -1,8 +1,17 @@
-import React from 'react'
+import React from "react";
 
-function GreenButton({ style, className, onClick, title, name, type }) {
-    if (!className) {
-        className = `
+function GreenButton({
+  style,
+  className,
+  onClick,
+  title,
+  name,
+  type,
+  styleClass,
+  disabled,
+}) {
+  if (!className) {
+    className = `
           w-full
           text-white 
           bg-gradient-to-r 
@@ -23,12 +32,17 @@ function GreenButton({ style, className, onClick, title, name, type }) {
           mr-2 
           mb-2
         `;
-      }
-      return (
-        <button className={className} style={style} onClick={onClick}>
-          {title}
-        </button>
-      );
+  }
+  return (
+    <button
+      className={className + styleClass}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {title}
+    </button>
+  );
 }
 
-export default GreenButton
+export default GreenButton;

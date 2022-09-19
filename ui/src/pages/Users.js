@@ -16,31 +16,28 @@ function Users() {
     console.log(stateData)
     getUsers()
       .then((response) => {
-        dispatch({
-          type: 'data',
-          payload: response.data
-        })
+        // dispatch({
+        //   type: 'data',
+        //   payload: response.data
+        // })
         setData(response.data)
       })
       .catch((error) => {
         console.log("HATA: ", error);
         toast.error("Bağlantıda bir hata meydana geldi.", {
-          duration: Infinity,
+          duration: 4000,
         });
       })
-      .finally(() => {
-        setData(stateData)
-      });
   }, []);
 
-  useEffect(() => {
-    setData([stateData])
-    navigate("/users", {
-      replace: true,
-      state: stateData
-    })
+  // useEffect(() => {
+  //   setData([stateData])
+  //   navigate("/users", {
+  //     replace: true,
+  //     state: stateData
+  //   })
     
-  }, [stateData, dispatch])
+  // }, [stateData, dispatch])
 
   return (
     <div className="w-full">

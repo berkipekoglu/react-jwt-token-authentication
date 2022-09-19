@@ -22,20 +22,21 @@ function RouteControl({ children }) {
   //     return flag;
   //   }
 
-  const check_token = useSelector((state) => state.token.token);
+  //const check_token = useSelector((state) => state.token.token);
 
   let navigate = useNavigate();
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(localStorage.getItem("token"));
   let isLogin = false;
 
-  const getToken = useSelector(state => state.token.token)
-
+  //const getToken = useSelector(state => state.token.token)
   useEffect(() => {
-    console.log("useEffect çalıştı")
-    if(!getToken){
-      navigate('./login', {replace: true})
+    console.log("Kontrol yapılıyor")
+    setToken(localStorage.getItem("token"));
+    setAuthToken(token)
+    if(token === null){
+      navigate("/login", {replace: true})
     }
-  }, [getToken])
+  }, [token])
 
 
 

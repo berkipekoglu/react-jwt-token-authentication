@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../FormFields/Button";
 import { Dialog, Transition } from "@headlessui/react";
@@ -190,7 +190,7 @@ const ModalEdit = ({
   _deleteFunc,
   _getFunc,
   _modalTitle,
-  type,
+  type
 }) => {
   let [isOpen, setIsOpen] = useState(isOpenParams);
   const [checked, setChecked] = useState(false);
@@ -247,6 +247,7 @@ const ModalEdit = ({
           data: resp.data
         }
       })
+      
     })
     .catch((err) => {
       console.log("Veri çekilirken bir hata oluştu: ", err.message)
@@ -262,7 +263,7 @@ const ModalEdit = ({
           payload: response.data
         })
         closeModal();
-        //refresh();
+        refresh();
       })
       .catch((err) => {
         console.log(err);
@@ -279,7 +280,7 @@ const ModalEdit = ({
       .then((response) => {
         toast.success("Kayıt silindi.");
         closeModal();
-        //refresh();
+        refresh();
       })
       .catch((err) => {
         toast.error("Kayıt silinirken bir sorun oluştu! \n ", err);
@@ -291,7 +292,7 @@ const ModalEdit = ({
       .then((response) => {
         toast.success("Kayıt eklendi.");
         closeModal();
-        //refresh();
+        refresh();
       })
       .catch((err) => {
         toast.error("Kayıt eklenirken bir hata oluştu! \n ", err);

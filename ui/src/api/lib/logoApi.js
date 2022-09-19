@@ -1,5 +1,5 @@
 import axiosClient from "../apiClient";
 
-export function postLogo(){
-    return axiosClient.post('/logoapi')
+export function postLogo(params){
+    return axiosClient.post('/logoapi', params)
 }

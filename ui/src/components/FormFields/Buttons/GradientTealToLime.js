@@ -1,6 +1,15 @@
 import React from "react";
 
-function GradientTealToLimeButton({ style, className, onClick, title, name, type }) {
+function GradientTealToLimeButton({
+  style,
+  className,
+  onClick,
+  title,
+  name,
+  type,
+  styleClass,
+  disabled,
+}) {
   if (!className) {
     className = `
       w-full
@@ -26,7 +35,12 @@ function GradientTealToLimeButton({ style, className, onClick, title, name, type
     `;
   }
   return (
-    <button className={className} style={style} onClick={onClick}>
+    <button
+      className={className + styleClass}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {title}
     </button>
   );

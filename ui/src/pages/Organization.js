@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -15,37 +15,34 @@ function Organization() {
   const [data, setData] = useState([]);
   const stateData = useSelector(state => state.data.data)
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     getOrganization()
       .then((response) => {
-        dispatch({
-          type: 'data',
-          payload: response.data
-        })
+        // dispatch({
+        //   type: 'data',
+        //   payload: response.data
+        // })
         setData(response.data)
       })
       .catch((error) => {
         console.log("HATA: ", error);
         toast.error("Bağlantıda bir hata meydana geldi.", {
-          duration: Infinity,
+          duration: 4000,
         });
         
       })
-      .finally(() => {
-        setData(stateData)
-      })
   }, []);
 
-  useEffect(() => {
-    setData([stateData])
-    navigate("/organization", {
-      replace: true,
-      state: stateData
-    })
+  // useEffect(() => {
+  //   setData([stateData])
+  //   navigate("/organization", {
+  //     replace: true,
+  //     state: stateData
+  //   })
     
-  }, [stateData, dispatch])
+  // }, [stateData, dispatch])
 
   return (
     <div className="w-full">
